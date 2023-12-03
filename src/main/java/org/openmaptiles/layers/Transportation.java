@@ -168,6 +168,7 @@ public class Transportation implements
   private final AtomicBoolean loggedNoGb = new AtomicBoolean(false);
   private final AtomicBoolean loggedNoIreland = new AtomicBoolean(false);
   private final boolean z13Paths;
+  private final boolean z13Tracks;
   private final Stats stats;
   private final PlanetilerConfig config;
   private PreparedGeometry greatBritain = null;
@@ -181,9 +182,14 @@ public class Transportation implements
       "transportation(_name) layer: show all paths on z13",
       false
     );
+    z13Tracks = config.arguments().getBoolean(
+      "transportation_z13_tracks",
+      "transportation(_name) layer: show all tracks on z13",
+      false
+    );
     MINZOOMS = Map.ofEntries(
       entry(FieldValues.CLASS_PATH, z13Paths ? 13 : 14),
-      entry(FieldValues.CLASS_TRACK, 14),
+      entry(FieldValues.CLASS_TRACK, z13Tracks ? 13 : 14),
       entry(FieldValues.CLASS_SERVICE, 13),
       entry(FieldValues.CLASS_MINOR, 13),
       entry(FieldValues.CLASS_RACEWAY, 12),
