@@ -86,25 +86,36 @@ public class Waterway implements
    * short segment of it goes through this tile.
    */
 
-  private static final Map<String, Integer> CLASS_MINZOOM = Map.of(
-    "river", 12,
-    "canal", 12,
 
-    "stream", 13,
-    "drain", 13,
-    "ditch", 13
-  );
   private static final String TEMP_REL_ID_ADDR = "_relid";
 
+  private final Map<String, Integer> MINZOOMS;
   private final Translations translations;
   private final PlanetilerConfig config;
   private final Stats stats;
   private final LongObjectHashMap<AtomicDouble> riverRelationLengths = Hppc.newLongObjectHashMap();
+  private final boolean z12Streams;
 
   public Waterway(Translations translations, PlanetilerConfig config, Stats stats) {
     this.config = config;
     this.translations = translations;
     this.stats = stats;
+
+    z12Streams = config.arguments().getBoolean(
+      "waterway_z12_streams",
+      "waterway layer: show all streams on z12",
+      false
+    );
+
+    MINZOOMS = Map.of(
+      "river", 12,
+      "canal", 12,
+
+      "stream", z12Streams ? 12 : 13,
+
+      "drain", 13,
+      "ditch", 13
+    );
   }
 
   private static final ZoomFunction.MeterToPixelThresholds MIN_PIXEL_LENGTHS = ZoomFunction.meterThresholds()
@@ -188,7 +199,7 @@ public class Waterway implements
     String waterway = element.waterway();
     String name = nullIfEmpty(element.name());
     boolean important = "river".equals(waterway) && name != null;
-    int minzoom = important ? 9 : CLASS_MINZOOM.getOrDefault(element.waterway(), 14);
+    int minzoom = important ? 9 : MINZOOMS.getOrDefault(element.waterway(), 14);
     features.line(LAYER_NAME)
       .setBufferPixels(BUFFER_SIZE)
       .setAttr(Fields.CLASS, element.waterway())
