@@ -82,6 +82,7 @@ public class WaterName implements
    */
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WaterName.class);
+  private static final Set<String> BAY_OR_STRAIT = Set.of("bay", "strait");
   private static final Set<String> SEA_OR_OCEAN_PLACE = Set.of("sea", "ocean");
   private final Translations translations;
   // need to synchronize updates from multiple threads
@@ -172,7 +173,7 @@ public class WaterName implements
         // a) if same as here then, fix there and then here
         // b) if OK (while here NOK), fix only here
         minzoom = rank;
-      } else if ("bay".equals(element.natural())) {
+      } else if (BAY_OR_STRAIT.contains(element.natural())) {
         minzoom = 13;
       } else {
         minzoom = 8;
