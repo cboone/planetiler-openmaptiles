@@ -162,27 +162,27 @@ public class WaterName implements
           rank = next.getValue();
         }
       }
-      int minZoom;
+      int minzoom;
       if ("ocean".equals(element.place())) {
-        minZoom = 0;
+        minzoom = 0;
       } else if (rank != null) {
         // FIXME: While this looks like matching properly stuff in https://github.com/openmaptiles/openmaptiles/pull/1457/files#diff-201daa1c61c99073fe3280d440c9feca5ed2236b251ad454caa14cc203f952d1R74 ,
         // it includes not just https://www.openstreetmap.org/relation/13360255 but also https://www.openstreetmap.org/node/1385157299 (and some others).
         // Hence check how that OpenMapTiles code works for "James Bay" and:
         // a) if same as here then, fix there and then here
         // b) if OK (while here NOK), fix only here
-        minZoom = rank;
+        minzoom = rank;
       } else if ("bay".equals(element.natural())) {
-        minZoom = 13;
+        minzoom = 13;
       } else {
-        minZoom = 8;
+        minzoom = 8;
       }
       features.point(LAYER_NAME)
         .setBufferPixels(BUFFER_SIZE)
         .putAttrs(OmtLanguageUtils.getNames(source.tags(), translations))
         .setAttr(Fields.CLASS, clazz)
         .setAttr(Fields.INTERMITTENT, element.isIntermittent() ? 1 : 0)
-        .setMinZoom(minZoom);
+        .setMinZoom(minzoom);
     }
   }
 
