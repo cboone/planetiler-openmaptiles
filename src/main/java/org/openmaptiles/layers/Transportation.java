@@ -496,7 +496,9 @@ public class Transportation implements
       String baseClass = highwayClass.replace("_construction", "");
       minzoom = switch (baseClass) {
         case FieldValues.CLASS_SERVICE -> isDrivewayOrParkingAisle(service(element.service())) ? 14 : 13;
-        case FieldValues.CLASS_TRACK, FieldValues.CLASS_PATH -> routeRank == 1 ? 12 :
+        case FieldValues.CLASS_TRACK -> routeRank == 1 ? 12 :
+          (z13Tracks || !nullOrEmpty(element.name()) || routeRank <= 2) ? 13 : 14;
+        case FieldValues.CLASS_PATH -> routeRank == 1 ? 12 :
           (z13Paths || !nullOrEmpty(element.name()) || routeRank <= 2 || !nullOrEmpty(element.sacScale())) ? 13 : 14;
         case FieldValues.CLASS_TRUNK -> {
           // trunks in some networks to have same min. zoom as highway = "motorway"
